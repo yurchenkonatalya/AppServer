@@ -5,8 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ModuleDto {
-    private Long idModule;
-    private Long idSubsystem;
-    private String nameModule;
+public class JwtDto {
+    private String username;
+    private String token;
 }

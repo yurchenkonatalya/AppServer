@@ -1,7 +1,7 @@
 package com.example.appserver.service.impl;
 
 import com.example.appserver.dto.JwtDto;
-import com.example.appserver.dto.JwtResponse;
+import com.example.appserver.dto.ValidDto;
 import com.example.appserver.dto.ModuleDto;
 import com.example.appserver.model.Ministry;
 import com.example.appserver.repositiry.MinistryRepo;
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity getUsersList(JwtDto jwtDto) {
-        JwtResponse responseEntity = apiService.checkAccessToken(jwtDto.getToken());
+        ValidDto responseEntity = apiService.checkAccessToken(jwtDto.getToken());
         if (responseEntity.getIsValid()){
             ArrayList<Module> list = null;
             Map<Object, Object> response = new HashMap<>();
@@ -44,14 +44,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<ModuleDto> getModule(JwtDto jwtDto) {
-        JwtResponse response = apiService.checkAccessToken(jwtDto.getToken());
+        log.warn(jwtDto.getId().toString());
+        ValidDto response = apiService.checkAccessToken(jwtDto.getToken());
         log.error(response.toString());
         if(response.getIsValid()){
-           Ministry ministry = ministryRepo.findModulesByIdSubsystem(1L);
+           Ministry ministry = ministryRepo.findModulesByIdSubsystem(jwtDto.getId());
            return new ResponseEntity<ModuleDto>(
                    new ModuleDto(ministry.getIdModule(), ministry.getIdSubsystem(), ministry.getNameModule()),
                    HttpStatus.OK);
         }
-        return new ResponseEntity<ModuleDto>((ModuleDto) null, HttpStatus.FORBIDDEN);
+        return new ResponseEntity<ModuleDto>((ModuleDto) null, HttpStatus.UNAUTHORIZED);
     }
 }

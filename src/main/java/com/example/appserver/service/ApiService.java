@@ -1,7 +1,7 @@
 package com.example.appserver.service;
 
-import com.example.appserver.dto.JwtResponse;
+import com.example.appserver.dto.ValidDto;
 
 public interface ApiService {
-    JwtResponse checkAccessToken(String accessToken);
+    ValidDto checkAccessToken(String accessToken);
 }
